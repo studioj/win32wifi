@@ -1,3 +1,4 @@
+# coding=utf-8
 # win32wifi - Windows Native Wifi Api Python library.
 # Copyright (C) 2016 - Shaked Gitelman
 #
@@ -20,17 +21,14 @@
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
 
-from ctypes import *
-from datetime import datetime
-from enum import Enum
 import functools
-import time
+
 import xmltodict
 
-from comtypes import GUID
 from win32wifi.Win32NativeWifiApi import *
 
 NULL = None
+
 
 class WirelessInterface(object):
     def __init__(self, wlan_iface_info):
@@ -107,6 +105,7 @@ class WirelessNetworkBss(object):
         self.capabilities = bss_entry.CapabilityInformation
         self.__process_information_elements(bss_entry)
         self.__process_information_elements2()
+        self.frequency = bss_entry.ChCenterFrequency
 
     def __process_information_elements(self, bss_entry):
         self.raw_information_elements = ""
@@ -122,7 +121,7 @@ class WirelessNetworkBss(object):
         self.information_elements = []
         aux = self.raw_information_elements
         index = 0
-        while(index < len(aux) - MINIMAL_IE_SIZE):
+        while index < len(aux) - MINIMAL_IE_SIZE:
             eid = ord(aux[index])
             index += 1
             length = ord(aux[index])
@@ -140,6 +139,7 @@ class WirelessNetworkBss(object):
         result += "BSS Type: %s\n" % self.bss_type
         result += "PHY Type: %s\n" % self.phy_type
         result += "Capabilities: %d\n" % self.capabilities
+        result += "Frequency: " + str(self.frequency)
         # result += "Raw Information Elements:\n"
         # result += "%r" % self.raw_information_elements
         result += "\nInformation Elements:\n"
@@ -191,6 +191,7 @@ class MSMNotificationData(object):
         result += "MAC: %s\n" % self.mac_addr
         return result
 
+
 class ACMConnectionNotificationData(object):
     def __init__(self, acm_notification_data):
         assert isinstance(acm_notification_data, WLAN_CONNECTION_NOTIFICATION_DATA)
@@ -209,6 +210,7 @@ class ACMConnectionNotificationData(object):
         result += "BSS Type: %s\n" % self.bss_type
         result += "Security Enabled: %r\n" % bool(self.security_enabled)
         return result
+
 
 def getWirelessInterfaces():
     """Returns a list of WirelessInterface objects based on the wireless
@@ -261,10 +263,10 @@ def getWirelessAvailableNetworkList(wireless_interface):
     num = network_list.contents.NumberOfItems
     network_pointer = addressof(network_list.contents.Network)
     networks_list = (data_type * num).from_address(network_pointer)
-    
+
     for network in networks_list:
         networks.append(WirelessNetwork(network))
-    
+
     WlanFreeMemory(network_list)
     WlanCloseHandle(handle)
     return networks
@@ -304,6 +306,7 @@ def getWirelessProfiles(wireless_interface):
     WlanCloseHandle(handle)
     return profiles
 
+
 def deleteProfile(wireless_interface, profile_name):
     handle = WlanOpenHandle()
     result = WlanDeleteProfile(handle, wireless_interface.guid, profile_name)
@@ -311,12 +314,14 @@ def deleteProfile(wireless_interface, profile_name):
 
     return result
 
+
 def disconnect(wireless_interface):
     """
     """
     handle = WlanOpenHandle()
     WlanDisconnect(handle, wireless_interface.guid)
     WlanCloseHandle(handle)
+
 
 # TODO(shaked): There is an error 87 when trying to connect to a wifi network.
 def connect(wireless_interface, connection_params):
@@ -345,7 +350,7 @@ def connect(wireless_interface, connection_params):
     connection_mode_int = WLAN_CONNECTION_MODE_VK[connection_mode]
     cnxp.wlanConnectionMode = WLAN_CONNECTION_MODE(connection_mode_int)
     # determine strProfile
-    if connection_mode == ('wlan_connection_mode_profile' or           # name
+    if connection_mode == ('wlan_connection_mode_profile' or  # name
                            'wlan_connection_mode_temporary_profile'):  # xml
         cnxp.strProfile = LPCWSTR(connection_params["profile"])
     else:
@@ -366,12 +371,12 @@ def connect(wireless_interface, connection_params):
         bssids = []
         for bssidish in connection_params["bssidList"]:
             bssidish = tuple(int(n, 16) for n in bssidish.split(b":"))
-            bssids.append((DOT11_MAC_ADDRESS)(*bssidish))
+            bssids.append(DOT11_MAC_ADDRESS(*bssidish))
         bssidListEntries = c_ulong(len(bssids))
         bssids = (DOT11_MAC_ADDRESS * len(bssids))(*bssids)
         bssidListHeader = NDIS_OBJECT_HEADER()
         bssidListHeader.Type = NDIS_OBJECT_TYPE_DEFAULT
-        bssidListHeader.Revision = DOT11_BSSID_LIST_REVISION_1 # chr()
+        bssidListHeader.Revision = DOT11_BSSID_LIST_REVISION_1  # chr()
         bssidListHeader.Size = c_ushort(sizeof(DOT11_BSSID_LIST))
         bssidList = DOT11_BSSID_LIST()
         bssidList.Header = bssidListHeader
@@ -380,7 +385,7 @@ def connect(wireless_interface, connection_params):
         bssidList.BSSIDs = bssids
         cnxp.pDesiredBssidList = pointer(bssidList)
     else:
-        cnxp.pDesiredBssidList = NULL # required for XP
+        cnxp.pDesiredBssidList = NULL  # required for XP
     # look up bssType
     # bssType must match type from profile if a profile is provided
     bssType = DOT11_BSS_TYPE_DICT_VK[connection_params["bssType"]]
@@ -389,13 +394,15 @@ def connect(wireless_interface, connection_params):
     cnxp.dwFlags = DWORD(connection_params["flags"])
     print(cnxp)
     result = WlanConnect(handle,
-                wireless_interface.guid,
-                cnxp)
+                         wireless_interface.guid,
+                         cnxp)
     WlanCloseHandle(handle)
     return result
 
+
 def dot11bssidToString(dot11Bssid):
     return ":".join(map(lambda x: "%02X" % x, dot11Bssid))
+
 
 def queryInterface(wireless_interface, opcode_item):
     """
@@ -411,10 +418,10 @@ def queryInterface(wireless_interface, opcode_item):
     WlanCloseHandle(handle)
     r = result.contents
     if opcode_item == "interface_state":
-        #WLAN_INTERFACE_STATE
+        # WLAN_INTERFACE_STATE
         ext_out = WLAN_INTERFACE_STATE_DICT[r.value]
     elif opcode_item == "current_connection":
-        #WLAN_CONNECTION_ATTRIBUTES
+        # WLAN_CONNECTION_ATTRIBUTES
         isState = WLAN_INTERFACE_STATE_DICT[r.isState]
         wlanConnectionMode = WLAN_CONNECTION_MODE_KV[r.wlanConnectionMode]
         strProfileName = r.strProfileName
@@ -455,20 +462,19 @@ def wndToStr(wlan_notification_data):
         "InterfaceGuid: %s" % wlan_notification_data.InterfaceGuid,
         "dwDataSize: %d" % wlan_notification_data.dwDataSize,
         "pData: %s" % wlan_notification_data.pData,
-        ])
+    ])
 
 
 class WlanEvent(object):
-
     ns_type_to_codes_dict = {
-        WLAN_NOTIFICATION_SOURCE_NONE:        None,
-        WLAN_NOTIFICATION_SOURCE_ONEX:        ONEX_NOTIFICATION_TYPE_ENUM,
-        WLAN_NOTIFICATION_SOURCE_ACM:         WLAN_NOTIFICATION_ACM_ENUM,
-        WLAN_NOTIFICATION_SOURCE_MSM:         WLAN_NOTIFICATION_MSM_ENUM,
-        WLAN_NOTIFICATION_SOURCE_SECURITY:    None,
-        WLAN_NOTIFICATION_SOURCE_IHV:         None,
-        WLAN_NOTIFICATION_SOURCE_HNWK:        WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM,
-        WLAN_NOTIFICATION_SOURCE_ALL:         ONEX_NOTIFICATION_TYPE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_NONE: None,
+        WLAN_NOTIFICATION_SOURCE_ONEX: ONEX_NOTIFICATION_TYPE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_ACM: WLAN_NOTIFICATION_ACM_ENUM,
+        WLAN_NOTIFICATION_SOURCE_MSM: WLAN_NOTIFICATION_MSM_ENUM,
+        WLAN_NOTIFICATION_SOURCE_SECURITY: None,
+        WLAN_NOTIFICATION_SOURCE_IHV: None,
+        WLAN_NOTIFICATION_SOURCE_HNWK: WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_ALL: ONEX_NOTIFICATION_TYPE_ENUM,
     }
 
     def __init__(self, original, notificationSource, notificationCode, interfaceGuid, data):
@@ -495,7 +501,7 @@ class WlanEvent(object):
 
         codes = WlanEvent.ns_type_to_codes_dict[actual.NotificationSource]
 
-        if codes != None:
+        if codes is not None:
             try:
                 code = codes(actual.NotificationCode)
                 data = WlanEvent.parse_data(actual.pData, actual.dwDataSize, actual.NotificationSource, code)
@@ -532,7 +538,7 @@ class WlanEvent(object):
 
     @staticmethod
     def deref(addr, typ):
-        return (typ).from_address(addr)
+        return typ.from_address(addr)
 
     def __str__(self):
         return self.notificationCode
@@ -541,7 +547,7 @@ class WlanEvent(object):
 def OnWlanNotification(callback, wlan_notification_data, p):
     event = WlanEvent.from_wlan_notification_data(wlan_notification_data)
 
-    if event != None:
+    if event is not None:
         callback(event)
 
 

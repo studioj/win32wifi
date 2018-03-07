@@ -21,16 +21,14 @@
 #
 
 from ctypes import *
-from enum import Enum
-
-from comtypes import GUID
-
 from ctypes.wintypes import BOOL
 from ctypes.wintypes import DWORD
 from ctypes.wintypes import HANDLE
-from ctypes.wintypes import LPWSTR
 from ctypes.wintypes import LPCWSTR
+from ctypes.wintypes import LPWSTR
 
+from comtypes import GUID
+from enum import Enum
 
 ERROR_SUCCESS = 0
 
@@ -65,16 +63,16 @@ DOT11_MAC_ADDRESS = c_ubyte * 6
 # type.
 DOT11_BSS_TYPE = c_uint
 DOT11_BSS_TYPE_DICT_KV = {
-                           1: "dot11_BSS_type_infrastructure",
-                           2: "dot11_BSS_type_independent",
-                           3: "dot11_BSS_type_any"
-                         }
+    1: "dot11_BSS_type_infrastructure",
+    2: "dot11_BSS_type_independent",
+    3: "dot11_BSS_type_any"
+}
 try:
-    DOT11_BSS_TYPE_DICT_VK = { v: k for k, v in
-            DOT11_BSS_TYPE_DICT_KV.items() }
+    DOT11_BSS_TYPE_DICT_VK = {v: k for k, v in
+                              DOT11_BSS_TYPE_DICT_KV.items()}
 except AttributeError:
-    DOT11_BSS_TYPE_DICT_VK = { v: k for k, v in
-            DOT11_BSS_TYPE_DICT_KV.items() }    
+    DOT11_BSS_TYPE_DICT_VK = {v: k for k, v in
+                              DOT11_BSS_TYPE_DICT_KV.items()}
 
 # The DOT11_PHY_TYPE enumeration defines an 802.11 PHY and media type.
 DOT11_PHY_TYPE = c_uint
@@ -118,7 +116,7 @@ DOT11_CIPHER_ALGORITHM_DICT = {0x00: "DOT11_CIPHER_ALGO_NONE",
                                0xffffffff: "DOT11_CIPHER_ALGO_IHV_END"}
 
 DOT11_RADIO_STATE = c_uint
-#TODO: values not verified
+# TODO: values not verified
 DOT11_RADIO_STATE_DICT = {0: "dot11_radio_state_unknown",
                           1: "dot11_radio_state_on",
                           2: "dot11_radio_state_off"}
@@ -154,79 +152,79 @@ WLAN_NOTIFICATION_SOURCE_HNWK = 0x0080
 WLAN_NOTIFICATION_SOURCE_ALL = 0xffff
 
 WLAN_NOTIFICATION_SOURCE_DICT = {
-    WLAN_NOTIFICATION_SOURCE_NONE:      "WLAN_NOTIFICATION_SOURCE_NONE",
-    WLAN_NOTIFICATION_SOURCE_ONEX:      "WLAN_NOTIFICATION_SOURCE_ONEX",
-    WLAN_NOTIFICATION_SOURCE_ACM:       "WLAN_NOTIFICATION_SOURCE_ACM",
-    WLAN_NOTIFICATION_SOURCE_MSM:       "WLAN_NOTIFICATION_SOURCE_MSM",
-    WLAN_NOTIFICATION_SOURCE_SECURITY:  "WLAN_NOTIFICATION_SOURCE_SECURITY",
-    WLAN_NOTIFICATION_SOURCE_IHV:       "WLAN_NOTIFICATION_SOURCE_IHV",
-    WLAN_NOTIFICATION_SOURCE_HNWK:      "WLAN_NOTIFICATION_SOURCE_HNWK",
-    WLAN_NOTIFICATION_SOURCE_ALL:       "WLAN_NOTIFICATION_SOURCE_ALL",
+    WLAN_NOTIFICATION_SOURCE_NONE: "WLAN_NOTIFICATION_SOURCE_NONE",
+    WLAN_NOTIFICATION_SOURCE_ONEX: "WLAN_NOTIFICATION_SOURCE_ONEX",
+    WLAN_NOTIFICATION_SOURCE_ACM: "WLAN_NOTIFICATION_SOURCE_ACM",
+    WLAN_NOTIFICATION_SOURCE_MSM: "WLAN_NOTIFICATION_SOURCE_MSM",
+    WLAN_NOTIFICATION_SOURCE_SECURITY: "WLAN_NOTIFICATION_SOURCE_SECURITY",
+    WLAN_NOTIFICATION_SOURCE_IHV: "WLAN_NOTIFICATION_SOURCE_IHV",
+    WLAN_NOTIFICATION_SOURCE_HNWK: "WLAN_NOTIFICATION_SOURCE_HNWK",
+    WLAN_NOTIFICATION_SOURCE_ALL: "WLAN_NOTIFICATION_SOURCE_ALL",
 }
 
 
 class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
-    OneXPublicNotificationBase          = 0
-    OneXNotificationTypeResultUpdate    = 1
-    OneXNotificationTypeAuthRestarted   = 2
-    OneXNotificationTypeEventInvalid    = 3
-    OneXNumNotifications                = OneXNotificationTypeEventInvalid
+    OneXPublicNotificationBase = 0
+    OneXNotificationTypeResultUpdate = 1
+    OneXNotificationTypeAuthRestarted = 2
+    OneXNotificationTypeEventInvalid = 3
+    OneXNumNotifications = OneXNotificationTypeEventInvalid
 
 
 class WLAN_NOTIFICATION_ACM_ENUM(Enum):
-    wlan_notification_acm_start                         = 0
-    wlan_notification_acm_autoconf_enabled              = 1
-    wlan_notification_acm_autoconf_disabled             = 2
-    wlan_notification_acm_background_scan_enabled       = 3
-    wlan_notification_acm_background_scan_disabled      = 4
-    wlan_notification_acm_bss_type_change               = 5
-    wlan_notification_acm_power_setting_change          = 6
-    wlan_notification_acm_scan_complete                 = 7
-    wlan_notification_acm_scan_fail                     = 8
-    wlan_notification_acm_connection_start              = 9
-    wlan_notification_acm_connection_complete           = 10
-    wlan_notification_acm_connection_attempt_fail       = 11
-    wlan_notification_acm_filter_list_change            = 12
-    wlan_notification_acm_interface_arrival             = 13
-    wlan_notification_acm_interface_removal             = 14
-    wlan_notification_acm_profile_change                = 15
-    wlan_notification_acm_profile_name_change           = 16
-    wlan_notification_acm_profiles_exhausted            = 17
-    wlan_notification_acm_network_not_available         = 18
-    wlan_notification_acm_network_available             = 19
-    wlan_notification_acm_disconnecting                 = 20
-    wlan_notification_acm_disconnected                  = 21
-    wlan_notification_acm_adhoc_network_state_change    = 22
-    wlan_notification_acm_profile_unblocked             = 23
-    wlan_notification_acm_screen_power_change           = 24
-    wlan_notification_acm_profile_blocked               = 25
-    wlan_notification_acm_scan_list_refresh             = 26
-    wlan_notification_acm_end                           = 27
+    wlan_notification_acm_start = 0
+    wlan_notification_acm_autoconf_enabled = 1
+    wlan_notification_acm_autoconf_disabled = 2
+    wlan_notification_acm_background_scan_enabled = 3
+    wlan_notification_acm_background_scan_disabled = 4
+    wlan_notification_acm_bss_type_change = 5
+    wlan_notification_acm_power_setting_change = 6
+    wlan_notification_acm_scan_complete = 7
+    wlan_notification_acm_scan_fail = 8
+    wlan_notification_acm_connection_start = 9
+    wlan_notification_acm_connection_complete = 10
+    wlan_notification_acm_connection_attempt_fail = 11
+    wlan_notification_acm_filter_list_change = 12
+    wlan_notification_acm_interface_arrival = 13
+    wlan_notification_acm_interface_removal = 14
+    wlan_notification_acm_profile_change = 15
+    wlan_notification_acm_profile_name_change = 16
+    wlan_notification_acm_profiles_exhausted = 17
+    wlan_notification_acm_network_not_available = 18
+    wlan_notification_acm_network_available = 19
+    wlan_notification_acm_disconnecting = 20
+    wlan_notification_acm_disconnected = 21
+    wlan_notification_acm_adhoc_network_state_change = 22
+    wlan_notification_acm_profile_unblocked = 23
+    wlan_notification_acm_screen_power_change = 24
+    wlan_notification_acm_profile_blocked = 25
+    wlan_notification_acm_scan_list_refresh = 26
+    wlan_notification_acm_end = 27
 
 
 class WLAN_NOTIFICATION_MSM_ENUM(Enum):
-    wlan_notification_msm_start                         = 0
-    wlan_notification_msm_associating                   = 1 
-    wlan_notification_msm_associated                    = 2
-    wlan_notification_msm_authenticating                = 3
-    wlan_notification_msm_connected                     = 4
-    wlan_notification_msm_roaming_start                 = 5
-    wlan_notification_msm_roaming_end                   = 6
-    wlan_notification_msm_radio_state_change            = 7
-    wlan_notification_msm_signal_quality_change         = 8
-    wlan_notification_msm_disassociating                = 9
-    wlan_notification_msm_disconnected                  = 10
-    wlan_notification_msm_peer_join                     = 11
-    wlan_notification_msm_peer_leave                    = 12
-    wlan_notification_msm_adapter_removal               = 13
+    wlan_notification_msm_start = 0
+    wlan_notification_msm_associating = 1
+    wlan_notification_msm_associated = 2
+    wlan_notification_msm_authenticating = 3
+    wlan_notification_msm_connected = 4
+    wlan_notification_msm_roaming_start = 5
+    wlan_notification_msm_roaming_end = 6
+    wlan_notification_msm_radio_state_change = 7
+    wlan_notification_msm_signal_quality_change = 8
+    wlan_notification_msm_disassociating = 9
+    wlan_notification_msm_disconnected = 10
+    wlan_notification_msm_peer_join = 11
+    wlan_notification_msm_peer_leave = 12
+    wlan_notification_msm_adapter_removal = 13
     wlan_notification_msm_adapter_operation_mode_change = 14
-    wlan_notification_msm_end                           = 15
+    wlan_notification_msm_end = 15
 
 
 class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(Enum):
-    wlan_hosted_network_state_change        = 4096
-    wlan_hosted_network_peer_state_change   = 4097
-    wlan_hosted_network_radio_state_change  = 4098
+    wlan_hosted_network_state_change = 4096
+    wlan_hosted_network_peer_state_change = 4097
+    wlan_hosted_network_radio_state_change = 4098
 
 
 WLAN_CONNECTION_MODE = c_uint
@@ -237,11 +235,11 @@ WLAN_CONNECTION_MODE_KV = {0: "wlan_connection_mode_profile",
                            4: "wlan_connection_mode_auto",
                            5: "wlan_connection_mode_invalid"}
 try:
-    WLAN_CONNECTION_MODE_VK = { v: k for k, v in
-            WLAN_CONNECTION_MODE_KV.items() }
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.items()}
 except AttributeError:
-    WLAN_CONNECTION_MODE_VK = { v: k for k, v in
-            WLAN_CONNECTION_MODE_KV.iteritems() }
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.iteritems()}
 
 
 class WLAN_INTERFACE_INFO(Structure):
@@ -296,6 +294,7 @@ class WLAN_RADIO_STATE(Structure):
     """
     _fields_ = [("dwNumberOfPhys", DWORD),
                 ("PhyRadioState", WLAN_PHY_RADIO_STATE * 64)]
+
 
 class DOT11_SSID(Structure):
     """
@@ -491,7 +490,7 @@ class WLAN_NOTIFICATION_DATA(Structure):
           DWORD dwDataSize;
           PVOID pData;
         } WLAN_NOTIFICATION_DATA, *PWLAN_NOTIFICATION_DATA;
-    """ 
+    """
     _fields_ = [("NotificationSource", DWORD),
                 ("NotificationCode", DWORD),
                 ("InterfaceGuid", GUID),
@@ -499,7 +498,7 @@ class WLAN_NOTIFICATION_DATA(Structure):
                 ("pData", c_void_p)]
 
 
-class WLAN_NOTIFICATION_CALLBACK():
+class WLAN_NOTIFICATION_CALLBACK:
     """
         The WLAN_NOTIFICATION_CALLBACK allback function prototype defines 
         the type of notification callback function.
@@ -535,7 +534,7 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
                 ("bSecurityEnabled", BOOL),
                 ("bFirstPeer", BOOL),
                 ("bLastPeer", BOOL),
-                ("wlanReasonCode", WLAN_REASON_CODE),]
+                ("wlanReasonCode", WLAN_REASON_CODE), ]
 
 
 WLAN_NOTIFICATION_DATA_MSM_TYPES_DICT = {
@@ -554,6 +553,7 @@ WLAN_NOTIFICATION_DATA_MSM_TYPES_DICT = {
     WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_removal: WLAN_MSM_NOTIFICATION_DATA,
     WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_operation_mode_change: c_ulong,
 }
+
 
 class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     """
@@ -575,7 +575,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
                 ("bSecurityEnabled", BOOL),
                 ("wlanReasonCode", WLAN_REASON_CODE),
                 ("dwFlags", DWORD),
-                ("strProfileXml", (c_wchar * 1)),]
+                ("strProfileXml", (c_wchar * 1)), ]
 
 
 WLAN_NOTIFICATION_DATA_ACM_TYPES_DICT = {
@@ -607,6 +607,7 @@ WLAN_NOTIFICATION_DATA_ACM_TYPES_DICT = {
     WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_list_refresh: None,
 }
 
+
 def WlanRegisterNotification(hClientHandle, callback):
     """
         The WlanRegisterNotification function is used to register and 
@@ -629,7 +630,7 @@ def WlanRegisterNotification(hClientHandle, callback):
 
     func_ref = wlanapi.WlanRegisterNotification
     func_ref.argtypes = [
-        HANDLE, 
+        HANDLE,
         DWORD,
         BOOL,
         WLAN_NOTIFICATION_CALLBACK_M,
@@ -645,11 +646,11 @@ def WlanRegisterNotification(hClientHandle, callback):
     pdwPrevNotifSource = None
 
     result = func_ref(hClientHandle,
-                      dwNotifSource, 
-                      bIgnoreDuplicate, 
-                      funcCallback, 
-                      pCallbackContext, 
-                      None, 
+                      dwNotifSource,
+                      bIgnoreDuplicate,
+                      funcCallback,
+                      pCallbackContext,
+                      None,
                       pdwPrevNotifSource)
 
     if result != ERROR_SUCCESS:
@@ -918,6 +919,7 @@ def WlanGetProfile(hClientHandle, pInterfaceGuid, profileName):
         raise Exception("WlanGetProfile failed.")
     return xml
 
+
 def WlanDeleteProfile(hClientHandle, pInterfaceGuid, profileName):
     """
     DWORD WINAPI WlanDeleteProfile(
@@ -939,7 +941,7 @@ def WlanDeleteProfile(hClientHandle, pInterfaceGuid, profileName):
                       None)
     if result != ERROR_SUCCESS:
         raise Exception("WlanDeleteProfile failed. error %d" % result, result)
-    return result    
+    return result
 
 
 class NDIS_OBJECT_HEADER(Structure):
@@ -957,6 +959,7 @@ class NDIS_OBJECT_HEADER(Structure):
                 ("Revision", c_char),
                 ("Size", c_ushort)]
 
+
 class DOT11_BSSID_LIST(Structure):
     """
         The DOT11_BSSID_LIST structure contains a list of basic service set
@@ -969,11 +972,12 @@ class DOT11_BSSID_LIST(Structure):
           DOT11_MAC_ADDRESS  BSSIDs[1];
         } DOT11_BSSID_LIST, *PDOT11_BSSID_LIST;
     """
-    #NOTE: Would benefit from dynamic instantiation to mod # of BSSIDs
+    # NOTE: Would benefit from dynamic instantiation to mod # of BSSIDs
     _fields_ = [("Header", NDIS_OBJECT_HEADER),
                 ("uNumOfEntries", c_ulong),
                 ("uTotalNumOfEntries", c_ulong),
                 ("BSSIDs", DOT11_MAC_ADDRESS * 1)]
+
 
 class WLAN_CONNECTION_PARAMETERS(Structure):
     """
@@ -1009,6 +1013,7 @@ class WLAN_CONNECTION_PARAMETERS(Structure):
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dwFlags", DWORD)]
 
+
 def WlanConnect(hClientHandle, pInterfaceGuid, pConnectionParameters):
     """
     The WlanConnect function attempts to connect to a specific network.
@@ -1034,6 +1039,7 @@ def WlanConnect(hClientHandle, pInterfaceGuid, pConnectionParameters):
         raise Exception("".join(["WlanConnect failed with error ", str(result)]))
     return result
 
+
 def WlanDisconnect(hClientHandle, pInterfaceGuid):
     """
     """
@@ -1048,6 +1054,7 @@ def WlanDisconnect(hClientHandle, pInterfaceGuid):
     if result != ERROR_SUCCESS:
         raise Exception("WlanDisconnect failed.")
     return result
+
 
 WLAN_INTF_OPCODE = c_uint
 WLAN_INTF_OPCODE_DICT = {
@@ -1087,6 +1094,7 @@ WLAN_OPCODE_VALUE_TYPE_DICT = {
     3: "wlan_opcode_value_type_invalid"
 }
 
+
 class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
     """
     """
@@ -1099,6 +1107,7 @@ class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
                 ("ulRxRate", c_ulong),
                 ("ulTxRate", c_ulong)]
 
+
 class WLAN_SECURITY_ATTRIBUTES(Structure):
     """
     """
@@ -1106,6 +1115,7 @@ class WLAN_SECURITY_ATTRIBUTES(Structure):
                 ("bOneXEnabled", BOOL),
                 ("dot11AuthAlgorithm", DOT11_AUTH_ALGORITHM_TYPE),
                 ("dot11CipherAlgorithm", DOT11_CIPHER_ALGORITHM_TYPE)]
+
 
 class WLAN_CONNECTION_ATTRIBUTES(Structure):
     """
@@ -1126,6 +1136,7 @@ class WLAN_CONNECTION_ATTRIBUTES(Structure):
                 ("wlanAssociationAttributes", WLAN_ASSOCIATION_ATTRIBUTES),
                 ("wlanSecurityAttributes", WLAN_SECURITY_ATTRIBUTES)]
 
+
 WLAN_INTF_OPCODE_TYPE_DICT = {
     "wlan_intf_opcode_autoconf_enabled": c_bool,
     "wlan_intf_opcode_background_scan_enabled": c_bool,
@@ -1134,19 +1145,20 @@ WLAN_INTF_OPCODE_TYPE_DICT = {
     "wlan_intf_opcode_interface_state": WLAN_INTERFACE_STATE,
     "wlan_intf_opcode_current_connection": WLAN_CONNECTION_ATTRIBUTES,
     "wlan_intf_opcode_channel_number": c_ulong,
-    #"wlan_intf_opcode_supported_infrastructure_auth_cipher_pairs": \
-            #WLAN_AUTH_CIPHER_PAIR_LIST,
-    #"wlan_intf_opcode_supported_adhoc_auth_cipher_pairs": \
-            #WLAN_AUTH_CIPHER_PAIR_LIST,
-    #"wlan_intf_opcode_supported_country_or_region_string_list": \
-            #WLAN_COUNTRY_OR_REGION_STRING_LIST,
+    # "wlan_intf_opcode_supported_infrastructure_auth_cipher_pairs": \
+    # WLAN_AUTH_CIPHER_PAIR_LIST,
+    # "wlan_intf_opcode_supported_adhoc_auth_cipher_pairs": \
+    # WLAN_AUTH_CIPHER_PAIR_LIST,
+    # "wlan_intf_opcode_supported_country_or_region_string_list": \
+    # WLAN_COUNTRY_OR_REGION_STRING_LIST,
     "wlan_intf_opcode_media_streaming_mode": c_bool,
-    #"wlan_intf_opcode_statistics": WLAN_STATISTICS,
+    # "wlan_intf_opcode_statistics": WLAN_STATISTICS,
     "wlan_intf_opcode_rssi": c_long,
     "wlan_intf_opcode_current_operation_mode": c_ulong,
     "wlan_intf_opcode_supported_safe_mode": c_bool,
     "wlan_intf_opcode_certified_safe_mode": c_bool
 }
+
 
 def WlanQueryInterface(hClientHandle, pInterfaceGuid, OpCode):
     """
@@ -1161,7 +1173,7 @@ def WlanQueryInterface(hClientHandle, pInterfaceGuid, OpCode):
         );
     """
     func_ref = wlanapi.WlanQueryInterface
-    #TODO: Next two lines sketchy due to incomplete implementation.
+    # TODO: Next two lines sketchy due to incomplete implementation.
     opcode_name = WLAN_INTF_OPCODE_DICT[OpCode.value]
     return_type = WLAN_INTF_OPCODE_TYPE_DICT[opcode_name]
     func_ref.argtypes = [HANDLE,
@@ -1185,4 +1197,3 @@ def WlanQueryInterface(hClientHandle, pInterfaceGuid, OpCode):
     if result != ERROR_SUCCESS:
         raise Exception("WlanQueryInterface failed.")
     return ppData
-
