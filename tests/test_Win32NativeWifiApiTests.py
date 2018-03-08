@@ -1,3 +1,4 @@
+# coding=utf-8
 # win32wifi - Windows Native Wifi Api Python library.
 # Copyright (C) 2016 - Shaked Gitelman
 #
@@ -19,10 +20,6 @@
 # Author: Andres Blanco     (6e726d)    <6e726d@gmail.com>
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
-
-import sys
-
-sys.path.append('../')
 
 import unittest
 
@@ -143,27 +140,6 @@ class TestWin32NativeWifiApi(unittest.TestCase):
         WlanFreeMemory(wlan_ifaces)
         WlanCloseHandle(handle)
 
-    def testWlanRegisterNotification(self):
-        handle = WlanOpenHandle()
-        wlan_ifaces = WlanEnumInterfaces(handle)
-        data_type = wlan_ifaces.contents.InterfaceInfo._type_
-        num = wlan_ifaces.contents.NumberOfItems
-        ifaces_pointer = addressof(wlan_ifaces.contents.InterfaceInfo)
-        wlan_iface_info_list = (data_type * num).from_address(ifaces_pointer)
-        msg = "We expect at least one wireless interface."
-        self.assertGreaterEqual(len(wlan_iface_info_list), 1, msg)
-
-        import threading
-        ev = threading.Event()
-
-        def callback(wnd, p):
-            ev.set()
-
-        cb = WlanRegisterNotification(handle, callback)
-        ev.wait(5)
-
-        if not ev.is_set():
-            self.fail("Didn't receive any notification.")
 
 if __name__ == "__main__":
     unittest.main()

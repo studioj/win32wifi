@@ -1,3 +1,4 @@
+# coding=utf-8
 # win32wifi - Windows Native Wifi Api Python library.
 # Copyright (C) 2016 - Shaked Gitelman
 #
@@ -498,7 +499,7 @@ class WLAN_NOTIFICATION_DATA(Structure):
                 ("pData", c_void_p)]
 
 
-class WLAN_NOTIFICATION_CALLBACK:
+class WLAN_NOTIFICATION_CALLBACK(object):
     """
         The WLAN_NOTIFICATION_CALLBACK allback function prototype defines 
         the type of notification callback function.
@@ -508,6 +509,10 @@ class WLAN_NOTIFICATION_CALLBACK:
            PVOID                   context
         );
     """
+
+    def __init__(self):
+        pass
+
     _fields_ = [("data", POINTER(WLAN_NOTIFICATION_DATA)),
                 ("context", c_void_p)]
 

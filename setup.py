@@ -11,13 +11,12 @@ with open(path.join(here, 'README.md')) as f:
 setup(
     name='win32wifi',
     packages=['win32wifi'],  # this must be the same as the name above
-    version='0.1.0',
+    version='0.1.1',
     description='Python Windows Wifi - !Still Under Development!',
     long_description=long_description,
-    author='Shaked Gitelman',
+    author=('Shaked Gitelman', 'Jef Neefs'),
     author_email='shaked.dev@gmail.com',
     url='https://github.com/almondg/win32wifi',
-    download_url='https://github.com/almondg/win32wifi/tarball/0.1.0',  # TOODO: Actually upload this to github.
     keywords=['windows', 'win32', 'wifi', 'wlan', 'wlanapi', 'wlanapi.dll'],
     license='GPLv3+',
     classifiers=[
@@ -39,7 +38,7 @@ setup(
         # TODO(shaked): Make sure we still support python 2.*
         # 'Programming Language :: Python :: 2',
         # 'Programming Language :: Python :: 2.6',
-        # 'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2.7',
         # 'Programming Language :: Python :: 3',
         # 'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',

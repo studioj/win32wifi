@@ -220,7 +220,7 @@ def getWirelessInterfaces():
     wlan_ifaces = WlanEnumInterfaces(handle)
     # Handle the WLAN_INTERFACE_INFO_LIST pointer to get a list of
     # WLAN_INTERFACE_INFO structures.
-    data_type = wlan_ifaces.contents.InterfaceInfo._type_
+    data_type = type(wlan_ifaces.contents.InterfaceInfo)
     num = wlan_ifaces.contents.NumberOfItems
     ifaces_pointer = addressof(wlan_ifaces.contents.InterfaceInfo)
     wlan_interface_info_list = (data_type * num).from_address(ifaces_pointer)
@@ -516,7 +516,7 @@ class WlanEvent(object):
                                   actual.InterfaceGuid,
                                   data)
                 return event
-            except:
+            except Exception:
                 return None
 
     @staticmethod
