@@ -21,9 +21,9 @@ import sys
 
 sys.path.append('../')
 
-from Win32Wifi import deleteProfile
-from Win32Wifi import getWirelessInterfaces
-from Win32Wifi import getWirelessProfiles
+from win32wifi.Win32Wifi import deleteProfile
+from win32wifi.Win32Wifi import getWirelessInterfaces
+from win32wifi.Win32Wifi import getWirelessProfiles
 
 
 def listProfiles(iface):

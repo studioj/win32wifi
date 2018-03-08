@@ -1,3 +1,5 @@
+import datetime
+
 import asyncio
 
 from win32wifi.Win32Wifi import *
