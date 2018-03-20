@@ -362,18 +362,24 @@ class DOT11_SSID(Dot11Ssid):
         warnings.warn("This class naming is depricated please use the proper python class naming => Dot11Ssid")
 
 
-class WLAN_RAW_DATA(Structure):
+class WlanRawData(Structure):
     """
-        The WLAN_RAW_DATA structure contains raw data in the form of a blob
+        The WlanRawData structure contains raw data in the form of a blob
         that is used by some Native Wifi functions.
 
         typedef struct _WLAN_RAW_DATA {
             DWORD dwDataSize;
             BYTE  DataBlob[1];
-        } WLAN_RAW_DATA, *PWLAN_RAW_DATA;
+        } WlanRawData, *PWLAN_RAW_DATA;
     """
     _fields_ = [("DataSize", DWORD),
                 ("DataBlob", c_byte * 1)]
+
+
+class WLAN_RAW_DATA(WlanRawData):
+    def __init__(self):
+        super(WLAN_RAW_DATA, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanRawData")
 
 
 class WLAN_RATE_SET(Structure):
@@ -809,7 +815,7 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
     func_ref.argtypes = [HANDLE,
                          POINTER(GUID),
                          POINTER(Dot11Ssid),
-                         POINTER(WLAN_RAW_DATA),
+                         POINTER(WlanRawData),
                          c_void_p]
     func_ref.restype = DWORD
     if ssid:
@@ -821,7 +827,7 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
         dot11_ssid = byref(Dot11Ssid(length, data))
     else:
         dot11_ssid = None
-    # TODO: Support WLAN_RAW_DATA argument.
+    # TODO: Support WlanRawData argument.
     result = func_ref(hClientHandle,
                       byref(pInterfaceGuid),
                       dot11_ssid,
