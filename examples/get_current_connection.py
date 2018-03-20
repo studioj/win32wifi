@@ -18,17 +18,13 @@
 #
 
 import pprint
-import sys
 
-sys.path.append('../')
-
-from win32wifi import Win32Wifi
+import win32wifi
 
 if __name__ == "__main__":
-    ifaces = Win32Wifi.getWirelessInterfaces()
+    ifaces = win32wifi.get_wireless_interfaces()
     pp = pprint.PrettyPrinter(indent=4)
     for iface in ifaces:
         guid = iface.guid
-        res = Win32Wifi.queryInterface(iface, "current_connection")  # wlan_intf_opcode_current_connection
+        res = win32wifi.query_interface(iface, "current_connection")  # wlan_intf_opcode_current_connection
         pp.pprint(res[1])
-        

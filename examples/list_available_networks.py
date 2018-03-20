@@ -20,17 +20,17 @@
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
 
-from win32wifi.Win32Wifi import getWirelessAvailableNetworkList
-from win32wifi.Win32Wifi import getWirelessInterfaces
+from win32wifi import get_wireless_available_network_list
+from win32wifi import get_wireless_interfaces
 
 if __name__ == "__main__":
-    ifaces = getWirelessInterfaces()
+    ifaces = get_wireless_interfaces()
     print(ifaces)
     print(len(ifaces))
     for iface in ifaces:
         print(iface)
         guid = iface.guid
-        networks = getWirelessAvailableNetworkList(iface)
+        networks = get_wireless_available_network_list(iface)
         print()
         for network in networks:
             print(network)

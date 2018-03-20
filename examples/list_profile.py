@@ -20,15 +20,15 @@
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
 
-from win32wifi.Win32Wifi import getWirelessInterfaces
-from win32wifi.Win32Wifi import getWirelessProfiles
+from win32wifi import get_wireless_interfaces
+from win32wifi import get_wireless_profiles
 
 if __name__ == "__main__":
-    ifaces = getWirelessInterfaces()
+    ifaces = get_wireless_interfaces()
     for iface in ifaces:
         print(iface)
         guid = iface.guid
-        profiles = getWirelessProfiles(iface)
+        profiles = get_wireless_profiles(iface)
         print(profiles)
         for profile in profiles:
             if profile.name == "Pretty Fly for a WiFi":

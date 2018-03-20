@@ -276,8 +276,6 @@ class WLAN_INTERFACE_INFO_LIST(Structure):
 
 
 class WLAN_PHY_RADIO_STATE(Structure):
-    """
-    """
     _fields_ = [("dwPhyIndex", DWORD),
                 ("dot11SoftwareRadioState", DOT11_RADIO_STATE),
                 ("dot11HardwareRadioState", DOT11_RADIO_STATE)]
@@ -1046,8 +1044,6 @@ def WlanConnect(hClientHandle, pInterfaceGuid, pConnectionParameters):
 
 
 def WlanDisconnect(hClientHandle, pInterfaceGuid):
-    """
-    """
     func_ref = wlanapi.WlanDisconnect
     func_ref.argtypes = [HANDLE,
                          POINTER(GUID),
@@ -1101,8 +1097,6 @@ WLAN_OPCODE_VALUE_TYPE_DICT = {
 
 
 class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
-    """
-    """
     _fields_ = [("dot11Ssid", DOT11_SSID),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dot11Bssid", DOT11_MAC_ADDRESS),
@@ -1114,8 +1108,6 @@ class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
 
 
 class WLAN_SECURITY_ATTRIBUTES(Structure):
-    """
-    """
     _fields_ = [("bSecurityEnabled", BOOL),
                 ("bOneXEnabled", BOOL),
                 ("dot11AuthAlgorithm", DOT11_AUTH_ALGORITHM_TYPE),

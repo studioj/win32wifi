@@ -20,15 +20,15 @@
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
 
-from win32wifi.Win32Wifi import getWirelessInterfaces
-from win32wifi.Win32Wifi import getWirelessNetworkBssList
+from win32wifi import get_wireless_interfaces
+from win32wifi import get_wireless_networks_bss_list
 
 if __name__ == "__main__":
-    ifaces = getWirelessInterfaces()
+    ifaces = get_wireless_interfaces()
     for iface in ifaces:
         print(iface)
         guid = iface.guid
-        bsss = getWirelessNetworkBssList(iface)
+        bsss = get_wireless_networks_bss_list(iface)
         print()
         for bss in bsss:
             print(bss)
