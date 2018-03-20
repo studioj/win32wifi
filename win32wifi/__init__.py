@@ -520,7 +520,7 @@ def connect(wireless_interface, connection_params):
         cnxp.strProfile = NULL
     # ssid
     if connection_params["ssid"] is not None:
-        dot11Ssid = native_api.DOT11_SSID()
+        dot11Ssid = native_api.Dot11Ssid()
         dot11Ssid.SSID = connection_params["ssid"]
         dot11Ssid.SSIDLength = len(connection_params["ssid"])
         cnxp.pDot11Ssid = native_api.pointer(dot11Ssid)

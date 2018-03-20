@@ -323,31 +323,43 @@ class WLAN_PHY_RADIO_STATE(WlanPhyRadioState):
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanPhyRadioState")
 
 
-class WLAN_RADIO_STATE(Structure):
+class WlanRadioState(Structure):
     """
-        The WLAN_RADIO_STATE structure specifies the radio state on a list
+        The WlanRadioState structure specifies the radio state on a list
         of physical layer (PHY) types.
 
         typedef struct _WLAN_RADIO_STATE {
             DWORD                dwNumberOfPhys;
             WlanPhyRadioState PhyRadioState[64];
-        } WLAN_RADIO_STATE, *PWLAN_RADIO_STATE
+        } WlanRadioState, *PWLAN_RADIO_STATE
     """
     _fields_ = [("dwNumberOfPhys", DWORD),
                 ("PhyRadioState", WlanPhyRadioState * 64)]
 
 
-class DOT11_SSID(Structure):
+class WLAN_RADIO_STATE(WlanRadioState):
+    def __init__(self):
+        super(WLAN_RADIO_STATE, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanRadioState")
+
+
+class Dot11Ssid(Structure):
     """
-        A DOT11_SSID structure contains the SSID of an interface.
+        A Dot11Ssid structure contains the SSID of an interface.
 
         typedef struct _DOT11_SSID {
             ULONG uSSIDLength;
             UCHAR ucSSID[DOT11_SSID_MAX_LENGTH];
-        } DOT11_SSID, *PDOT11_SSID;
+        } Dot11Ssid, *PDOT11_SSID;
     """
     _fields_ = [("SSIDLength", c_ulong),
                 ("SSID", c_char * DOT11_SSID_MAX_LENGTH)]
+
+
+class DOT11_SSID(Dot11Ssid):
+    def __init__(self):
+        super(DOT11_SSID, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => Dot11Ssid")
 
 
 class WLAN_RAW_DATA(Structure):
@@ -381,7 +393,7 @@ class WLAN_BSS_ENTRY(Structure):
         set (BSS).
 
         typedef struct _WLAN_BSS_ENTRY {
-            DOT11_SSID        dot11Ssid;
+            Dot11Ssid        dot11Ssid;
             ULONG             uPhyId;
             DOT11_MAC_ADDRESS dot11Bssid;
             DOT11_BSS_TYPE    dot11BssType;
@@ -399,7 +411,7 @@ class WLAN_BSS_ENTRY(Structure):
             ULONG             ulIeSize;
         } WLAN_BSS_ENTRY, *PWLAN_BSS_ENTRY;
     """
-    _fields_ = [("dot11Ssid", DOT11_SSID),
+    _fields_ = [("dot11Ssid", Dot11Ssid),
                 ("PhyId", c_ulong),
                 ("dot11Bssid", DOT11_MAC_ADDRESS),
                 ("dot11BssType", DOT11_BSS_TYPE),
@@ -440,7 +452,7 @@ class WLAN_AVAILABLE_NETWORK(Structure):
 
         typedef struct _WLAN_AVAILABLE_NETWORK {
             WCHAR                  strProfileName[256];
-            DOT11_SSID             dot11Ssid;
+            Dot11Ssid             dot11Ssid;
             DOT11_BSS_TYPE         dot11BssType;
             ULONG                  uNumberOfBssids;
             BOOL                   bNetworkConnectable;
@@ -457,7 +469,7 @@ class WLAN_AVAILABLE_NETWORK(Structure):
         } WLAN_AVAILABLE_NETWORK, *PWLAN_AVAILABLE_NETWORK;
     """
     _fields_ = [("ProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("NumberOfBssids", c_ulong),
                 ("NetworkConnectable", BOOL),
@@ -562,7 +574,7 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
     typedef struct _WLAN_MSM_NOTIFICATION_DATA {
         WLAN_CONNECTION_MODE wlanConnectionMode;
         WCHAR                strProfileName[WLAN_MAX_NAME_LENGTH];
-        DOT11_SSID           dot11Ssid;
+        Dot11Ssid           dot11Ssid;
         DOT11_BSS_TYPE       dot11BssType;
         DOT11_MAC_ADDRESS    dot11MacAddr;
         BOOL                 bSecurityEnabled;
@@ -573,7 +585,7 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dot11MacAddr", DOT11_MAC_ADDRESS),
                 ("bSecurityEnabled", BOOL),
@@ -605,7 +617,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     typedef struct _WLAN_CONNECTION_NOTIFICATION_DATA {
         WLAN_CONNECTION_MODE wlanConnectionMode;
         WCHAR                strProfileName[WLAN_MAX_NAME_LENGTH];
-        DOT11_SSID           dot11Ssid;
+        Dot11Ssid           dot11Ssid;
         DOT11_BSS_TYPE       dot11BssType;
         BOOL                 bSecurityEnabled;
         WLAN_REASON_CODE     wlanReasonCode;
@@ -615,7 +627,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("bSecurityEnabled", BOOL),
                 ("wlanReasonCode", WLAN_REASON_CODE),
@@ -796,7 +808,7 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
     func_ref = wlanapi.WlanScan
     func_ref.argtypes = [HANDLE,
                          POINTER(GUID),
-                         POINTER(DOT11_SSID),
+                         POINTER(Dot11Ssid),
                          POINTER(WLAN_RAW_DATA),
                          c_void_p]
     func_ref.restype = DWORD
@@ -806,7 +818,7 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
             raise Exception("SSIDs have a maximum length of 32 characters.")
         # data = tuple(ord(char) for char in ssid)
         data = ssid
-        dot11_ssid = byref(DOT11_SSID(length, data))
+        dot11_ssid = byref(Dot11Ssid(length, data))
     else:
         dot11_ssid = None
     # TODO: Support WLAN_RAW_DATA argument.
@@ -1053,7 +1065,7 @@ class WLAN_CONNECTION_PARAMETERS(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfile", LPCWSTR),
-                ("pDot11_ssid", POINTER(DOT11_SSID)),
+                ("pDot11_ssid", POINTER(Dot11Ssid)),
                 ("pDesiredBssidList", POINTER(DOT11_BSSID_LIST)),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dwFlags", DWORD)]
@@ -1139,7 +1151,7 @@ WLAN_OPCODE_VALUE_TYPE_DICT = {
 
 
 class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
-    _fields_ = [("dot11Ssid", DOT11_SSID),
+    _fields_ = [("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dot11Bssid", DOT11_MAC_ADDRESS),
                 ("dot11PhyType", DOT11_PHY_TYPE),
@@ -1179,7 +1191,7 @@ class WLAN_CONNECTION_ATTRIBUTES(Structure):
 WLAN_INTF_OPCODE_TYPE_DICT = {
     "wlan_intf_opcode_autoconf_enabled": c_bool,
     "wlan_intf_opcode_background_scan_enabled": c_bool,
-    "wlan_intf_opcode_radio_state": WLAN_RADIO_STATE,
+    "wlan_intf_opcode_radio_state": WlanRadioState,
     "wlan_intf_opcode_bss_type": DOT11_BSS_TYPE,
     "wlan_intf_opcode_interface_state": WLAN_INTERFACE_STATE,
     "wlan_intf_opcode_current_connection": WLAN_CONNECTION_ATTRIBUTES,
