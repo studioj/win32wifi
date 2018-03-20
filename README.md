@@ -1,6 +1,5 @@
-#########################################################################
 win32wifi (Python Windows Wifi)
-#########################################################################
+==============
 
 win32wifi is a set of Python bindings for the Windows Native Wifi API.
 
@@ -13,6 +12,8 @@ Authors
 Andres Blanco 	(6e726d)
 
 Shaked Gitelman (almondg)
+
+Jef Neefs (studioj)
 
 License
 ==============

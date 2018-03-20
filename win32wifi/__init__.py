@@ -218,13 +218,13 @@ class ACMConnectionNotificationData(object):
 class WlanEvent(object):
     ns_type_to_codes_dict = {
         native_api.WLAN_NOTIFICATION_SOURCE_NONE: None,
-        native_api.WLAN_NOTIFICATION_SOURCE_ONEX: native_api.ONEX_NOTIFICATION_TYPE_ENUM,
-        native_api.WLAN_NOTIFICATION_SOURCE_ACM: native_api.WLAN_NOTIFICATION_ACM_ENUM,
-        native_api.WLAN_NOTIFICATION_SOURCE_MSM: native_api.WLAN_NOTIFICATION_MSM_ENUM,
+        native_api.WLAN_NOTIFICATION_SOURCE_ONEX: native_api.OneXNotificationTypeEnum,
+        native_api.WLAN_NOTIFICATION_SOURCE_ACM: native_api.WlanNotificationACMEnum,
+        native_api.WLAN_NOTIFICATION_SOURCE_MSM: native_api.WlanNotificationMSMEnum,
         native_api.WLAN_NOTIFICATION_SOURCE_SECURITY: None,
         native_api.WLAN_NOTIFICATION_SOURCE_IHV: None,
-        native_api.WLAN_NOTIFICATION_SOURCE_HNWK: native_api.WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM,
-        native_api.WLAN_NOTIFICATION_SOURCE_ALL: native_api.ONEX_NOTIFICATION_TYPE_ENUM,
+        native_api.WLAN_NOTIFICATION_SOURCE_HNWK: native_api.WlanHostedNetworkNotificationCodeEnum,
+        native_api.WLAN_NOTIFICATION_SOURCE_ALL: native_api.OneXNotificationTypeEnum,
     }
 
     def __init__(self, original, notificationSource, notificationCode, interfaceGuid, data):
@@ -389,7 +389,7 @@ def get_wireless_interfaces():
     interfaces_list = []
     handle = native_api.WlanOpenHandle()
     wlan_ifaces = native_api.WlanEnumInterfaces(handle)
-    # Handle the WLAN_INTERFACE_INFO_LIST pointer to get a list of WLAN_INTERFACE_INFO structures.
+    # Handle the WLAN_INTERFACE_INFO_LIST pointer to get a list of WlanInterfaceInfo structures.
     data_type = wlan_ifaces.contents.InterfaceInfo._type_
     num = wlan_ifaces.contents.NumberOfItems
     ifaces_pointer = native_api.addressof(wlan_ifaces.contents.InterfaceInfo)

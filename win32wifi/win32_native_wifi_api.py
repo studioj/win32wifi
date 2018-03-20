@@ -20,7 +20,7 @@
 # Author: Andres Blanco     (6e726d)    <6e726d@gmail.com>
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
-
+import warnings
 from ctypes import *
 from ctypes.wintypes import BOOL
 from ctypes.wintypes import DWORD
@@ -163,8 +163,22 @@ WLAN_NOTIFICATION_SOURCE_DICT = {
     WLAN_NOTIFICATION_SOURCE_ALL: "WLAN_NOTIFICATION_SOURCE_ALL",
 }
 
+WLAN_CONNECTION_MODE = c_uint
+WLAN_CONNECTION_MODE_KV = {0: "wlan_connection_mode_profile",
+                           1: "wlan_connection_mode_temporary_profile",
+                           2: "wlan_connection_mode_discovery_secure",
+                           3: "wlan_connection_mode_discovery_unsecure",
+                           4: "wlan_connection_mode_auto",
+                           5: "wlan_connection_mode_invalid"}
+try:
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.items()}
+except AttributeError:
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.iteritems()}
 
-class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
+
+class OneXNotificationTypeEnum(Enum):
     OneXPublicNotificationBase = 0
     OneXNotificationTypeResultUpdate = 1
     OneXNotificationTypeAuthRestarted = 2
@@ -172,7 +186,13 @@ class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
     OneXNumNotifications = OneXNotificationTypeEventInvalid
 
 
-class WLAN_NOTIFICATION_ACM_ENUM(Enum):
+class ONEX_NOTIFICATION_TYPE_ENUM(OneXNotificationTypeEnum):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => OneXNotificationTypeEnum")
+        super(self, ONEX_NOTIFICATION_TYPE_ENUM).__init__()
+
+
+class WlanNotificationACMEnum(Enum):
     wlan_notification_acm_start = 0
     wlan_notification_acm_autoconf_enabled = 1
     wlan_notification_acm_autoconf_disabled = 2
@@ -203,7 +223,13 @@ class WLAN_NOTIFICATION_ACM_ENUM(Enum):
     wlan_notification_acm_end = 27
 
 
-class WLAN_NOTIFICATION_MSM_ENUM(Enum):
+class WLAN_NOTIFICATION_ACM_ENUM(WlanNotificationACMEnum):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationACMEnum")
+        super(self, WLAN_NOTIFICATION_ACM_ENUM).__init__()
+
+
+class WlanNotificationMSMEnum(Enum):
     wlan_notification_msm_start = 0
     wlan_notification_msm_associating = 1
     wlan_notification_msm_associated = 2
@@ -222,41 +248,45 @@ class WLAN_NOTIFICATION_MSM_ENUM(Enum):
     wlan_notification_msm_end = 15
 
 
-class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(Enum):
+class WLAN_NOTIFICATION_MSM_ENUM(WlanNotificationMSMEnum):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationMSMEnum")
+        super(self, WLAN_NOTIFICATION_MSM_ENUM).__init__()
+
+
+class WlanHostedNetworkNotificationCodeEnum(Enum):
     wlan_hosted_network_state_change = 4096
     wlan_hosted_network_peer_state_change = 4097
     wlan_hosted_network_radio_state_change = 4098
 
 
-WLAN_CONNECTION_MODE = c_uint
-WLAN_CONNECTION_MODE_KV = {0: "wlan_connection_mode_profile",
-                           1: "wlan_connection_mode_temporary_profile",
-                           2: "wlan_connection_mode_discovery_secure",
-                           3: "wlan_connection_mode_discovery_unsecure",
-                           4: "wlan_connection_mode_auto",
-                           5: "wlan_connection_mode_invalid"}
-try:
-    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
-                               WLAN_CONNECTION_MODE_KV.items()}
-except AttributeError:
-    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
-                               WLAN_CONNECTION_MODE_KV.iteritems()}
+class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(WlanHostedNetworkNotificationCodeEnum):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => "
+                      "WlanHostedNetworkNotificationCodeEnum")
+        super(self, WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM).__init__()
 
 
-class WLAN_INTERFACE_INFO(Structure):
+class WlanInterfaceInfo(Structure):
     """
-        The WLAN_INTERFACE_INFO structure contains information about a wireless
+        The WlanInterfaceInfo structure contains information about a wireless
         LAN interface.
 
         typedef struct _WLAN_INTERFACE_INFO {
             GUID                 InterfaceGuid;
             WCHAR                strInterfaceDescription[256];
             WLAN_INTERFACE_STATE isState;
-        } WLAN_INTERFACE_INFO, *PWLAN_INTERFACE_INFO;
+        } WlanInterfaceInfo, *PWLAN_INTERFACE_INFO;
     """
     _fields_ = [("InterfaceGuid", GUID),
                 ("strInterfaceDescription", c_wchar * 256),
                 ("isState", WLAN_INTERFACE_STATE)]
+
+
+class WLAN_INTERFACE_INFO(WlanInterfaceInfo):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfo")
+        super(self, WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM).__init__()
 
 
 class WLAN_INTERFACE_INFO_LIST(Structure):
@@ -267,12 +297,12 @@ class WLAN_INTERFACE_INFO_LIST(Structure):
         typedef struct _WLAN_INTERFACE_INFO_LIST {
             DWORD               dwNumberOfItems;
             DWORD               dwIndex;
-            WLAN_INTERFACE_INFO InterfaceInfo[];
+            WlanInterfaceInfo InterfaceInfo[];
         } WLAN_INTERFACE_INFO_LIST, *PWLAN_INTERFACE_INFO_LIST;
     """
     _fields_ = [("NumberOfItems", DWORD),
                 ("Index", DWORD),
-                ("InterfaceInfo", WLAN_INTERFACE_INFO * 1)]
+                ("InterfaceInfo", WlanInterfaceInfo * 1)]
 
 
 class WLAN_PHY_RADIO_STATE(Structure):
@@ -541,20 +571,20 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
 
 
 WLAN_NOTIFICATION_DATA_MSM_TYPES_DICT = {
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_associating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_associated: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_authenticating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_connected: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_roaming_start: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_roaming_end: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_radio_state_change: None,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_signal_quality_change: c_ulong,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_disassociating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_disconnected: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_peer_join: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_peer_leave: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_removal: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_operation_mode_change: c_ulong,
+    WlanNotificationMSMEnum.wlan_notification_msm_associating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_associated: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_authenticating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_connected: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_roaming_start: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_roaming_end: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_radio_state_change: None,
+    WlanNotificationMSMEnum.wlan_notification_msm_signal_quality_change: c_ulong,
+    WlanNotificationMSMEnum.wlan_notification_msm_disassociating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_disconnected: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_peer_join: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_peer_leave: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_adapter_removal: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_adapter_operation_mode_change: c_ulong,
 }
 
 
@@ -582,32 +612,32 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
 
 
 WLAN_NOTIFICATION_DATA_ACM_TYPES_DICT = {
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_autoconf_enabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_autoconf_disabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_background_scan_enabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_background_scan_disabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_bss_type_change: DOT11_BSS_TYPE,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_power_setting_change: None,  # TODO: Change to WLAN_POWER_SETTING
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_complete: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_fail: WLAN_REASON_CODE,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_start: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_complete: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_attempt_fail: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_filter_list_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_interface_arrival: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_interface_removal: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_name_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profiles_exhausted: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_network_not_available: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_network_available: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_disconnecting: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_disconnected: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_adhoc_network_state_change: None,  # TODO: Change to WLAN_ADHOC_NETWORK_STATE
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_unblocked: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_screen_power_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_blocked: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_list_refresh: None,
+    WlanNotificationACMEnum.wlan_notification_acm_autoconf_enabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_autoconf_disabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_background_scan_enabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_background_scan_disabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_bss_type_change: DOT11_BSS_TYPE,
+    WlanNotificationACMEnum.wlan_notification_acm_power_setting_change: None,  # TODO: Change to WLAN_POWER_SETTING
+    WlanNotificationACMEnum.wlan_notification_acm_scan_complete: None,
+    WlanNotificationACMEnum.wlan_notification_acm_scan_fail: WLAN_REASON_CODE,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_start: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_complete: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_attempt_fail: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_filter_list_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_interface_arrival: None,
+    WlanNotificationACMEnum.wlan_notification_acm_interface_removal: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_name_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profiles_exhausted: None,
+    WlanNotificationACMEnum.wlan_notification_acm_network_not_available: None,
+    WlanNotificationACMEnum.wlan_notification_acm_network_available: None,
+    WlanNotificationACMEnum.wlan_notification_acm_disconnecting: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_disconnected: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_adhoc_network_state_change: None,  # TODO: Change to WLAN_ADHOC_NETWORK_STATE
+    WlanNotificationACMEnum.wlan_notification_acm_profile_unblocked: None,
+    WlanNotificationACMEnum.wlan_notification_acm_screen_power_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_blocked: None,
+    WlanNotificationACMEnum.wlan_notification_acm_scan_list_refresh: None,
 }
 
 
