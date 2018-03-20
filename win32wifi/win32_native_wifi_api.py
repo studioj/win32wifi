@@ -186,9 +186,14 @@ class OneXNotificationTypeEnum(Enum):
     OneXNumNotifications = OneXNotificationTypeEventInvalid
 
 
-class ONEX_NOTIFICATION_TYPE_ENUM(OneXNotificationTypeEnum):
-    def __init__(self):
-        super(ONEX_NOTIFICATION_TYPE_ENUM, self).__init__()
+class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
+    OneXPublicNotificationBase = 0
+    OneXNotificationTypeResultUpdate = 1
+    OneXNotificationTypeAuthRestarted = 2
+    OneXNotificationTypeEventInvalid = 3
+    OneXNumNotifications = OneXNotificationTypeEventInvalid
+
+    def __init__(self, *args):
         warnings.warn("This class naming is depricated please use the proper python class naming => OneXNotificationTypeEnum")
 
 
@@ -223,9 +228,37 @@ class WlanNotificationACMEnum(Enum):
     wlan_notification_acm_end = 27
 
 
-class WLAN_NOTIFICATION_ACM_ENUM(WlanNotificationACMEnum):
-    def __init__(self):
-        super(WLAN_NOTIFICATION_ACM_ENUM, self).__init__()
+class WLAN_NOTIFICATION_ACM_ENUM(Enum):
+    wlan_notification_acm_start = 0
+    wlan_notification_acm_autoconf_enabled = 1
+    wlan_notification_acm_autoconf_disabled = 2
+    wlan_notification_acm_background_scan_enabled = 3
+    wlan_notification_acm_background_scan_disabled = 4
+    wlan_notification_acm_bss_type_change = 5
+    wlan_notification_acm_power_setting_change = 6
+    wlan_notification_acm_scan_complete = 7
+    wlan_notification_acm_scan_fail = 8
+    wlan_notification_acm_connection_start = 9
+    wlan_notification_acm_connection_complete = 10
+    wlan_notification_acm_connection_attempt_fail = 11
+    wlan_notification_acm_filter_list_change = 12
+    wlan_notification_acm_interface_arrival = 13
+    wlan_notification_acm_interface_removal = 14
+    wlan_notification_acm_profile_change = 15
+    wlan_notification_acm_profile_name_change = 16
+    wlan_notification_acm_profiles_exhausted = 17
+    wlan_notification_acm_network_not_available = 18
+    wlan_notification_acm_network_available = 19
+    wlan_notification_acm_disconnecting = 20
+    wlan_notification_acm_disconnected = 21
+    wlan_notification_acm_adhoc_network_state_change = 22
+    wlan_notification_acm_profile_unblocked = 23
+    wlan_notification_acm_screen_power_change = 24
+    wlan_notification_acm_profile_blocked = 25
+    wlan_notification_acm_scan_list_refresh = 26
+    wlan_notification_acm_end = 27
+
+    def __init__(self, *args):
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationACMEnum")
 
 
@@ -248,9 +281,25 @@ class WlanNotificationMSMEnum(Enum):
     wlan_notification_msm_end = 15
 
 
-class WLAN_NOTIFICATION_MSM_ENUM(WlanNotificationMSMEnum):
-    def __init__(self):
-        super(WLAN_NOTIFICATION_MSM_ENUM, self).__init__()
+class WLAN_NOTIFICATION_MSM_ENUM(Enum):
+    wlan_notification_msm_start = 0
+    wlan_notification_msm_associating = 1
+    wlan_notification_msm_associated = 2
+    wlan_notification_msm_authenticating = 3
+    wlan_notification_msm_connected = 4
+    wlan_notification_msm_roaming_start = 5
+    wlan_notification_msm_roaming_end = 6
+    wlan_notification_msm_radio_state_change = 7
+    wlan_notification_msm_signal_quality_change = 8
+    wlan_notification_msm_disassociating = 9
+    wlan_notification_msm_disconnected = 10
+    wlan_notification_msm_peer_join = 11
+    wlan_notification_msm_peer_leave = 12
+    wlan_notification_msm_adapter_removal = 13
+    wlan_notification_msm_adapter_operation_mode_change = 14
+    wlan_notification_msm_end = 15
+
+    def __init__(self, *args):
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationMSMEnum")
 
 
@@ -260,11 +309,14 @@ class WlanHostedNetworkNotificationCodeEnum(Enum):
     wlan_hosted_network_radio_state_change = 4098
 
 
-class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(WlanHostedNetworkNotificationCodeEnum):
-    def __init__(self):
-        super(WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM, self).__init__()
-        warnings.warn("This class naming is depricated please use the proper python class naming => "
-                      "WlanHostedNetworkNotificationCodeEnum")
+class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(Enum):
+    wlan_hosted_network_state_change = 4096
+    wlan_hosted_network_peer_state_change = 4097
+    wlan_hosted_network_radio_state_change = 4098
+
+    def __init__(self, *args):
+        warnings.warn(
+            "This class naming is depricated please use the proper python class naming => WlanHostedNetworkNotificationCodeEnum")
 
 
 class WlanInterfaceInfo(Structure):
