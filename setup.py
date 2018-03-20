@@ -14,7 +14,7 @@ setup(
     version='0.1.2',
     description='Python Windows Wifi - !Still Under Development!',
     long_description=long_description,
-    author=('Shaked Gitelman', 'Jef Neefs'),
+    author=('Shaked Gitelman', 'Jef Neefs', 'chelw'),
     author_email='shaked.dev@gmail.com',
     url='https://github.com/almondg/win32wifi',
     keywords=['windows', 'win32', 'wifi', 'wlan', 'wlanapi', 'wlanapi.dll'],
