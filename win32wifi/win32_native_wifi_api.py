@@ -289,20 +289,26 @@ class WLAN_INTERFACE_INFO(WlanInterfaceInfo):
         super(self, WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM).__init__()
 
 
-class WLAN_INTERFACE_INFO_LIST(Structure):
+class WlanInterfaceInfoList(Structure):
     """
-        The WLAN_INTERFACE_INFO_LIST structure contains an array of NIC
+        The WlanInterfaceInfoList structure contains an array of NIC
         interface information.
 
         typedef struct _WLAN_INTERFACE_INFO_LIST {
             DWORD               dwNumberOfItems;
             DWORD               dwIndex;
             WlanInterfaceInfo InterfaceInfo[];
-        } WLAN_INTERFACE_INFO_LIST, *PWLAN_INTERFACE_INFO_LIST;
+        } WlanInterfaceInfoList, *PWLAN_INTERFACE_INFO_LIST;
     """
     _fields_ = [("NumberOfItems", DWORD),
                 ("Index", DWORD),
                 ("InterfaceInfo", WlanInterfaceInfo * 1)]
+
+
+class WLAN_INTERFACE_INFO_LIST(WlanInterfaceInfoList):
+    def __init__(self):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfoList")
+        super(self, WLAN_INTERFACE_INFO_LIST).__init__()
 
 
 class WLAN_PHY_RADIO_STATE(Structure):
@@ -759,9 +765,9 @@ def WlanEnumInterfaces(hClientHandle):
     func_ref = wlanapi.WlanEnumInterfaces
     func_ref.argtypes = [HANDLE,
                          c_void_p,
-                         POINTER(POINTER(WLAN_INTERFACE_INFO_LIST))]
+                         POINTER(POINTER(WlanInterfaceInfoList))]
     func_ref.restype = DWORD
-    wlan_ifaces = pointer(WLAN_INTERFACE_INFO_LIST())
+    wlan_ifaces = pointer(WlanInterfaceInfoList())
     result = func_ref(hClientHandle, None, byref(wlan_ifaces))
     if result != ERROR_SUCCESS:
         raise Exception("WlanEnumInterfaces failed.")

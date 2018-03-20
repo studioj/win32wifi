@@ -389,7 +389,7 @@ def get_wireless_interfaces():
     interfaces_list = []
     handle = native_api.WlanOpenHandle()
     wlan_ifaces = native_api.WlanEnumInterfaces(handle)
-    # Handle the WLAN_INTERFACE_INFO_LIST pointer to get a list of WlanInterfaceInfo structures.
+    # Handle the WlanInterfaceInfoList pointer to get a list of WlanInterfaceInfo structures.
     data_type = wlan_ifaces.contents.InterfaceInfo._type_
     num = wlan_ifaces.contents.NumberOfItems
     ifaces_pointer = native_api.addressof(wlan_ifaces.contents.InterfaceInfo)
