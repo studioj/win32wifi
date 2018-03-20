@@ -188,8 +188,8 @@ class OneXNotificationTypeEnum(Enum):
 
 class ONEX_NOTIFICATION_TYPE_ENUM(OneXNotificationTypeEnum):
     def __init__(self):
+        super(ONEX_NOTIFICATION_TYPE_ENUM, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => OneXNotificationTypeEnum")
-        super(self, ONEX_NOTIFICATION_TYPE_ENUM).__init__()
 
 
 class WlanNotificationACMEnum(Enum):
@@ -225,8 +225,8 @@ class WlanNotificationACMEnum(Enum):
 
 class WLAN_NOTIFICATION_ACM_ENUM(WlanNotificationACMEnum):
     def __init__(self):
+        super(WLAN_NOTIFICATION_ACM_ENUM, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationACMEnum")
-        super(self, WLAN_NOTIFICATION_ACM_ENUM).__init__()
 
 
 class WlanNotificationMSMEnum(Enum):
@@ -250,8 +250,8 @@ class WlanNotificationMSMEnum(Enum):
 
 class WLAN_NOTIFICATION_MSM_ENUM(WlanNotificationMSMEnum):
     def __init__(self):
+        super(WLAN_NOTIFICATION_MSM_ENUM, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationMSMEnum")
-        super(self, WLAN_NOTIFICATION_MSM_ENUM).__init__()
 
 
 class WlanHostedNetworkNotificationCodeEnum(Enum):
@@ -262,9 +262,9 @@ class WlanHostedNetworkNotificationCodeEnum(Enum):
 
 class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(WlanHostedNetworkNotificationCodeEnum):
     def __init__(self):
+        super(WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => "
                       "WlanHostedNetworkNotificationCodeEnum")
-        super(self, WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM).__init__()
 
 
 class WlanInterfaceInfo(Structure):
@@ -285,8 +285,8 @@ class WlanInterfaceInfo(Structure):
 
 class WLAN_INTERFACE_INFO(WlanInterfaceInfo):
     def __init__(self):
+        super(WLAN_INTERFACE_INFO, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfo")
-        super(self, WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM).__init__()
 
 
 class WlanInterfaceInfoList(Structure):
@@ -307,14 +307,20 @@ class WlanInterfaceInfoList(Structure):
 
 class WLAN_INTERFACE_INFO_LIST(WlanInterfaceInfoList):
     def __init__(self):
+        super(WLAN_INTERFACE_INFO_LIST, self).__init__()
         warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfoList")
-        super(self, WLAN_INTERFACE_INFO_LIST).__init__()
 
 
-class WLAN_PHY_RADIO_STATE(Structure):
+class WlanPhyRadioState(Structure):
     _fields_ = [("dwPhyIndex", DWORD),
                 ("dot11SoftwareRadioState", DOT11_RADIO_STATE),
                 ("dot11HardwareRadioState", DOT11_RADIO_STATE)]
+
+
+class WLAN_PHY_RADIO_STATE(WlanPhyRadioState):
+    def __init__(self):
+        super(WLAN_PHY_RADIO_STATE, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanPhyRadioState")
 
 
 class WLAN_RADIO_STATE(Structure):
@@ -324,11 +330,11 @@ class WLAN_RADIO_STATE(Structure):
 
         typedef struct _WLAN_RADIO_STATE {
             DWORD                dwNumberOfPhys;
-            WLAN_PHY_RADIO_STATE PhyRadioState[64];
+            WlanPhyRadioState PhyRadioState[64];
         } WLAN_RADIO_STATE, *PWLAN_RADIO_STATE
     """
     _fields_ = [("dwNumberOfPhys", DWORD),
-                ("PhyRadioState", WLAN_PHY_RADIO_STATE * 64)]
+                ("PhyRadioState", WlanPhyRadioState * 64)]
 
 
 class DOT11_SSID(Structure):
