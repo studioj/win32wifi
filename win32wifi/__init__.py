@@ -422,9 +422,9 @@ def get_wireless_networks_bss_list(wireless_interface):
 
 def scan_get_wireless_networks_bss_list(wireless_interface):
     """Scan and returns a list of WirelessNetworkBss objects based on the wireless networks availables."""
-    handle = WlanOpenHandle()
-    WlanScan(handle, wireless_interface.guid)
-    WlanCloseHandle(handle)
+    handle = native_api.WlanOpenHandle()
+    native_api.WlanScan(handle, wireless_interface.guid)
+    native_api.WlanCloseHandle(handle)
     return get_wireless_networks_bss_list(wireless_interface)
 
 
