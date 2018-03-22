@@ -20,7 +20,7 @@
 # Author: Andres Blanco     (6e726d)    <6e726d@gmail.com>
 # Author: Shaked Gitelman   (almondg)   <shaked.dev@gmail.com>
 #
-
+import warnings
 from ctypes import *
 from ctypes.wintypes import BOOL
 from ctypes.wintypes import DWORD
@@ -163,6 +163,28 @@ WLAN_NOTIFICATION_SOURCE_DICT = {
     WLAN_NOTIFICATION_SOURCE_ALL: "WLAN_NOTIFICATION_SOURCE_ALL",
 }
 
+WLAN_CONNECTION_MODE = c_uint
+WLAN_CONNECTION_MODE_KV = {0: "wlan_connection_mode_profile",
+                           1: "wlan_connection_mode_temporary_profile",
+                           2: "wlan_connection_mode_discovery_secure",
+                           3: "wlan_connection_mode_discovery_unsecure",
+                           4: "wlan_connection_mode_auto",
+                           5: "wlan_connection_mode_invalid"}
+try:
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.items()}
+except AttributeError:
+    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
+                               WLAN_CONNECTION_MODE_KV.iteritems()}
+
+
+class OneXNotificationTypeEnum(Enum):
+    OneXPublicNotificationBase = 0
+    OneXNotificationTypeResultUpdate = 1
+    OneXNotificationTypeAuthRestarted = 2
+    OneXNotificationTypeEventInvalid = 3
+    OneXNumNotifications = OneXNotificationTypeEventInvalid
+
 
 class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
     OneXPublicNotificationBase = 0
@@ -170,6 +192,40 @@ class ONEX_NOTIFICATION_TYPE_ENUM(Enum):
     OneXNotificationTypeAuthRestarted = 2
     OneXNotificationTypeEventInvalid = 3
     OneXNumNotifications = OneXNotificationTypeEventInvalid
+
+    def __init__(self, *args):
+        warnings.warn("This class naming is depricated please use the proper python class naming => OneXNotificationTypeEnum")
+
+
+class WlanNotificationACMEnum(Enum):
+    wlan_notification_acm_start = 0
+    wlan_notification_acm_autoconf_enabled = 1
+    wlan_notification_acm_autoconf_disabled = 2
+    wlan_notification_acm_background_scan_enabled = 3
+    wlan_notification_acm_background_scan_disabled = 4
+    wlan_notification_acm_bss_type_change = 5
+    wlan_notification_acm_power_setting_change = 6
+    wlan_notification_acm_scan_complete = 7
+    wlan_notification_acm_scan_fail = 8
+    wlan_notification_acm_connection_start = 9
+    wlan_notification_acm_connection_complete = 10
+    wlan_notification_acm_connection_attempt_fail = 11
+    wlan_notification_acm_filter_list_change = 12
+    wlan_notification_acm_interface_arrival = 13
+    wlan_notification_acm_interface_removal = 14
+    wlan_notification_acm_profile_change = 15
+    wlan_notification_acm_profile_name_change = 16
+    wlan_notification_acm_profiles_exhausted = 17
+    wlan_notification_acm_network_not_available = 18
+    wlan_notification_acm_network_available = 19
+    wlan_notification_acm_disconnecting = 20
+    wlan_notification_acm_disconnected = 21
+    wlan_notification_acm_adhoc_network_state_change = 22
+    wlan_notification_acm_profile_unblocked = 23
+    wlan_notification_acm_screen_power_change = 24
+    wlan_notification_acm_profile_blocked = 25
+    wlan_notification_acm_scan_list_refresh = 26
+    wlan_notification_acm_end = 27
 
 
 class WLAN_NOTIFICATION_ACM_ENUM(Enum):
@@ -202,6 +258,28 @@ class WLAN_NOTIFICATION_ACM_ENUM(Enum):
     wlan_notification_acm_scan_list_refresh = 26
     wlan_notification_acm_end = 27
 
+    def __init__(self, *args):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationACMEnum")
+
+
+class WlanNotificationMSMEnum(Enum):
+    wlan_notification_msm_start = 0
+    wlan_notification_msm_associating = 1
+    wlan_notification_msm_associated = 2
+    wlan_notification_msm_authenticating = 3
+    wlan_notification_msm_connected = 4
+    wlan_notification_msm_roaming_start = 5
+    wlan_notification_msm_roaming_end = 6
+    wlan_notification_msm_radio_state_change = 7
+    wlan_notification_msm_signal_quality_change = 8
+    wlan_notification_msm_disassociating = 9
+    wlan_notification_msm_disconnected = 10
+    wlan_notification_msm_peer_join = 11
+    wlan_notification_msm_peer_leave = 12
+    wlan_notification_msm_adapter_removal = 13
+    wlan_notification_msm_adapter_operation_mode_change = 14
+    wlan_notification_msm_end = 15
+
 
 class WLAN_NOTIFICATION_MSM_ENUM(Enum):
     wlan_notification_msm_start = 0
@@ -221,105 +299,139 @@ class WLAN_NOTIFICATION_MSM_ENUM(Enum):
     wlan_notification_msm_adapter_operation_mode_change = 14
     wlan_notification_msm_end = 15
 
+    def __init__(self, *args):
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanNotificationMSMEnum")
+
+
+class WlanHostedNetworkNotificationCodeEnum(Enum):
+    wlan_hosted_network_state_change = 4096
+    wlan_hosted_network_peer_state_change = 4097
+    wlan_hosted_network_radio_state_change = 4098
+
 
 class WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM(Enum):
     wlan_hosted_network_state_change = 4096
     wlan_hosted_network_peer_state_change = 4097
     wlan_hosted_network_radio_state_change = 4098
 
-
-WLAN_CONNECTION_MODE = c_uint
-WLAN_CONNECTION_MODE_KV = {0: "wlan_connection_mode_profile",
-                           1: "wlan_connection_mode_temporary_profile",
-                           2: "wlan_connection_mode_discovery_secure",
-                           3: "wlan_connection_mode_discovery_unsecure",
-                           4: "wlan_connection_mode_auto",
-                           5: "wlan_connection_mode_invalid"}
-try:
-    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
-                               WLAN_CONNECTION_MODE_KV.items()}
-except AttributeError:
-    WLAN_CONNECTION_MODE_VK = {v: k for k, v in
-                               WLAN_CONNECTION_MODE_KV.iteritems()}
+    def __init__(self, *args):
+        warnings.warn(
+            "This class naming is depricated please use the proper python class naming => WlanHostedNetworkNotificationCodeEnum")
 
 
-class WLAN_INTERFACE_INFO(Structure):
+class WlanInterfaceInfo(Structure):
     """
-        The WLAN_INTERFACE_INFO structure contains information about a wireless
+        The WlanInterfaceInfo structure contains information about a wireless
         LAN interface.
 
         typedef struct _WLAN_INTERFACE_INFO {
             GUID                 InterfaceGuid;
             WCHAR                strInterfaceDescription[256];
             WLAN_INTERFACE_STATE isState;
-        } WLAN_INTERFACE_INFO, *PWLAN_INTERFACE_INFO;
+        } WlanInterfaceInfo, *PWLAN_INTERFACE_INFO;
     """
     _fields_ = [("InterfaceGuid", GUID),
                 ("strInterfaceDescription", c_wchar * 256),
                 ("isState", WLAN_INTERFACE_STATE)]
 
 
-class WLAN_INTERFACE_INFO_LIST(Structure):
+class WLAN_INTERFACE_INFO(WlanInterfaceInfo):
+    def __init__(self):
+        super(WLAN_INTERFACE_INFO, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfo")
+
+
+class WlanInterfaceInfoList(Structure):
     """
-        The WLAN_INTERFACE_INFO_LIST structure contains an array of NIC
+        The WlanInterfaceInfoList structure contains an array of NIC
         interface information.
 
         typedef struct _WLAN_INTERFACE_INFO_LIST {
             DWORD               dwNumberOfItems;
             DWORD               dwIndex;
-            WLAN_INTERFACE_INFO InterfaceInfo[];
-        } WLAN_INTERFACE_INFO_LIST, *PWLAN_INTERFACE_INFO_LIST;
+            WlanInterfaceInfo InterfaceInfo[];
+        } WlanInterfaceInfoList, *PWLAN_INTERFACE_INFO_LIST;
     """
     _fields_ = [("NumberOfItems", DWORD),
                 ("Index", DWORD),
-                ("InterfaceInfo", WLAN_INTERFACE_INFO * 1)]
+                ("InterfaceInfo", WlanInterfaceInfo * 1)]
 
 
-class WLAN_PHY_RADIO_STATE(Structure):
+class WLAN_INTERFACE_INFO_LIST(WlanInterfaceInfoList):
+    def __init__(self):
+        super(WLAN_INTERFACE_INFO_LIST, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanInterfaceInfoList")
+
+
+class WlanPhyRadioState(Structure):
     _fields_ = [("dwPhyIndex", DWORD),
                 ("dot11SoftwareRadioState", DOT11_RADIO_STATE),
                 ("dot11HardwareRadioState", DOT11_RADIO_STATE)]
 
 
-class WLAN_RADIO_STATE(Structure):
+class WLAN_PHY_RADIO_STATE(WlanPhyRadioState):
+    def __init__(self):
+        super(WLAN_PHY_RADIO_STATE, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanPhyRadioState")
+
+
+class WlanRadioState(Structure):
     """
-        The WLAN_RADIO_STATE structure specifies the radio state on a list
+        The WlanRadioState structure specifies the radio state on a list
         of physical layer (PHY) types.
 
         typedef struct _WLAN_RADIO_STATE {
             DWORD                dwNumberOfPhys;
-            WLAN_PHY_RADIO_STATE PhyRadioState[64];
-        } WLAN_RADIO_STATE, *PWLAN_RADIO_STATE
+            WlanPhyRadioState PhyRadioState[64];
+        } WlanRadioState, *PWLAN_RADIO_STATE
     """
     _fields_ = [("dwNumberOfPhys", DWORD),
-                ("PhyRadioState", WLAN_PHY_RADIO_STATE * 64)]
+                ("PhyRadioState", WlanPhyRadioState * 64)]
 
 
-class DOT11_SSID(Structure):
+class WLAN_RADIO_STATE(WlanRadioState):
+    def __init__(self):
+        super(WLAN_RADIO_STATE, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanRadioState")
+
+
+class Dot11Ssid(Structure):
     """
-        A DOT11_SSID structure contains the SSID of an interface.
+        A Dot11Ssid structure contains the SSID of an interface.
 
         typedef struct _DOT11_SSID {
             ULONG uSSIDLength;
             UCHAR ucSSID[DOT11_SSID_MAX_LENGTH];
-        } DOT11_SSID, *PDOT11_SSID;
+        } Dot11Ssid, *PDOT11_SSID;
     """
     _fields_ = [("SSIDLength", c_ulong),
                 ("SSID", c_char * DOT11_SSID_MAX_LENGTH)]
 
 
-class WLAN_RAW_DATA(Structure):
+class DOT11_SSID(Dot11Ssid):
+    def __init__(self):
+        super(DOT11_SSID, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => Dot11Ssid")
+
+
+class WlanRawData(Structure):
     """
-        The WLAN_RAW_DATA structure contains raw data in the form of a blob
+        The WlanRawData structure contains raw data in the form of a blob
         that is used by some Native Wifi functions.
 
         typedef struct _WLAN_RAW_DATA {
             DWORD dwDataSize;
             BYTE  DataBlob[1];
-        } WLAN_RAW_DATA, *PWLAN_RAW_DATA;
+        } WlanRawData, *PWLAN_RAW_DATA;
     """
     _fields_ = [("DataSize", DWORD),
                 ("DataBlob", c_byte * 1)]
+
+
+class WLAN_RAW_DATA(WlanRawData):
+    def __init__(self):
+        super(WLAN_RAW_DATA, self).__init__()
+        warnings.warn("This class naming is depricated please use the proper python class naming => WlanRawData")
 
 
 class WLAN_RATE_SET(Structure):
@@ -339,7 +451,7 @@ class WLAN_BSS_ENTRY(Structure):
         set (BSS).
 
         typedef struct _WLAN_BSS_ENTRY {
-            DOT11_SSID        dot11Ssid;
+            Dot11Ssid        dot11Ssid;
             ULONG             uPhyId;
             DOT11_MAC_ADDRESS dot11Bssid;
             DOT11_BSS_TYPE    dot11BssType;
@@ -357,7 +469,7 @@ class WLAN_BSS_ENTRY(Structure):
             ULONG             ulIeSize;
         } WLAN_BSS_ENTRY, *PWLAN_BSS_ENTRY;
     """
-    _fields_ = [("dot11Ssid", DOT11_SSID),
+    _fields_ = [("dot11Ssid", Dot11Ssid),
                 ("PhyId", c_ulong),
                 ("dot11Bssid", DOT11_MAC_ADDRESS),
                 ("dot11BssType", DOT11_BSS_TYPE),
@@ -398,7 +510,7 @@ class WLAN_AVAILABLE_NETWORK(Structure):
 
         typedef struct _WLAN_AVAILABLE_NETWORK {
             WCHAR                  strProfileName[256];
-            DOT11_SSID             dot11Ssid;
+            Dot11Ssid             dot11Ssid;
             DOT11_BSS_TYPE         dot11BssType;
             ULONG                  uNumberOfBssids;
             BOOL                   bNetworkConnectable;
@@ -415,7 +527,7 @@ class WLAN_AVAILABLE_NETWORK(Structure):
         } WLAN_AVAILABLE_NETWORK, *PWLAN_AVAILABLE_NETWORK;
     """
     _fields_ = [("ProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("NumberOfBssids", c_ulong),
                 ("NetworkConnectable", BOOL),
@@ -520,7 +632,7 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
     typedef struct _WLAN_MSM_NOTIFICATION_DATA {
         WLAN_CONNECTION_MODE wlanConnectionMode;
         WCHAR                strProfileName[WLAN_MAX_NAME_LENGTH];
-        DOT11_SSID           dot11Ssid;
+        Dot11Ssid           dot11Ssid;
         DOT11_BSS_TYPE       dot11BssType;
         DOT11_MAC_ADDRESS    dot11MacAddr;
         BOOL                 bSecurityEnabled;
@@ -531,7 +643,7 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dot11MacAddr", DOT11_MAC_ADDRESS),
                 ("bSecurityEnabled", BOOL),
@@ -541,20 +653,20 @@ class WLAN_MSM_NOTIFICATION_DATA(Structure):
 
 
 WLAN_NOTIFICATION_DATA_MSM_TYPES_DICT = {
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_associating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_associated: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_authenticating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_connected: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_roaming_start: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_roaming_end: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_radio_state_change: None,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_signal_quality_change: c_ulong,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_disassociating: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_disconnected: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_peer_join: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_peer_leave: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_removal: WLAN_MSM_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_MSM_ENUM.wlan_notification_msm_adapter_operation_mode_change: c_ulong,
+    WlanNotificationMSMEnum.wlan_notification_msm_associating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_associated: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_authenticating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_connected: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_roaming_start: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_roaming_end: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_radio_state_change: None,
+    WlanNotificationMSMEnum.wlan_notification_msm_signal_quality_change: c_ulong,
+    WlanNotificationMSMEnum.wlan_notification_msm_disassociating: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_disconnected: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_peer_join: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_peer_leave: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_adapter_removal: WLAN_MSM_NOTIFICATION_DATA,
+    WlanNotificationMSMEnum.wlan_notification_msm_adapter_operation_mode_change: c_ulong,
 }
 
 
@@ -563,7 +675,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     typedef struct _WLAN_CONNECTION_NOTIFICATION_DATA {
         WLAN_CONNECTION_MODE wlanConnectionMode;
         WCHAR                strProfileName[WLAN_MAX_NAME_LENGTH];
-        DOT11_SSID           dot11Ssid;
+        Dot11Ssid           dot11Ssid;
         DOT11_BSS_TYPE       dot11BssType;
         BOOL                 bSecurityEnabled;
         WLAN_REASON_CODE     wlanReasonCode;
@@ -573,7 +685,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfileName", c_wchar * 256),
-                ("dot11Ssid", DOT11_SSID),
+                ("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("bSecurityEnabled", BOOL),
                 ("wlanReasonCode", WLAN_REASON_CODE),
@@ -582,32 +694,32 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
 
 
 WLAN_NOTIFICATION_DATA_ACM_TYPES_DICT = {
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_autoconf_enabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_autoconf_disabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_background_scan_enabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_background_scan_disabled: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_bss_type_change: DOT11_BSS_TYPE,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_power_setting_change: None,  # TODO: Change to WLAN_POWER_SETTING
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_complete: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_fail: WLAN_REASON_CODE,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_start: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_complete: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_connection_attempt_fail: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_filter_list_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_interface_arrival: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_interface_removal: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_name_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profiles_exhausted: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_network_not_available: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_network_available: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_disconnecting: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_disconnected: WLAN_CONNECTION_NOTIFICATION_DATA,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_adhoc_network_state_change: None,  # TODO: Change to WLAN_ADHOC_NETWORK_STATE
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_unblocked: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_screen_power_change: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_profile_blocked: None,
-    WLAN_NOTIFICATION_ACM_ENUM.wlan_notification_acm_scan_list_refresh: None,
+    WlanNotificationACMEnum.wlan_notification_acm_autoconf_enabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_autoconf_disabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_background_scan_enabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_background_scan_disabled: None,
+    WlanNotificationACMEnum.wlan_notification_acm_bss_type_change: DOT11_BSS_TYPE,
+    WlanNotificationACMEnum.wlan_notification_acm_power_setting_change: None,  # TODO: Change to WLAN_POWER_SETTING
+    WlanNotificationACMEnum.wlan_notification_acm_scan_complete: None,
+    WlanNotificationACMEnum.wlan_notification_acm_scan_fail: WLAN_REASON_CODE,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_start: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_complete: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_connection_attempt_fail: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_filter_list_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_interface_arrival: None,
+    WlanNotificationACMEnum.wlan_notification_acm_interface_removal: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_name_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profiles_exhausted: None,
+    WlanNotificationACMEnum.wlan_notification_acm_network_not_available: None,
+    WlanNotificationACMEnum.wlan_notification_acm_network_available: None,
+    WlanNotificationACMEnum.wlan_notification_acm_disconnecting: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_disconnected: WLAN_CONNECTION_NOTIFICATION_DATA,
+    WlanNotificationACMEnum.wlan_notification_acm_adhoc_network_state_change: None,  # TODO: Change to WLAN_ADHOC_NETWORK_STATE
+    WlanNotificationACMEnum.wlan_notification_acm_profile_unblocked: None,
+    WlanNotificationACMEnum.wlan_notification_acm_screen_power_change: None,
+    WlanNotificationACMEnum.wlan_notification_acm_profile_blocked: None,
+    WlanNotificationACMEnum.wlan_notification_acm_scan_list_refresh: None,
 }
 
 
@@ -729,9 +841,9 @@ def WlanEnumInterfaces(hClientHandle):
     func_ref = wlanapi.WlanEnumInterfaces
     func_ref.argtypes = [HANDLE,
                          c_void_p,
-                         POINTER(POINTER(WLAN_INTERFACE_INFO_LIST))]
+                         POINTER(POINTER(WlanInterfaceInfoList))]
     func_ref.restype = DWORD
-    wlan_ifaces = pointer(WLAN_INTERFACE_INFO_LIST())
+    wlan_ifaces = pointer(WlanInterfaceInfoList())
     result = func_ref(hClientHandle, None, byref(wlan_ifaces))
     if result != ERROR_SUCCESS:
         raise Exception("WlanEnumInterfaces failed.")
@@ -754,8 +866,8 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
     func_ref = wlanapi.WlanScan
     func_ref.argtypes = [HANDLE,
                          POINTER(GUID),
-                         POINTER(DOT11_SSID),
-                         POINTER(WLAN_RAW_DATA),
+                         POINTER(Dot11Ssid),
+                         POINTER(WlanRawData),
                          c_void_p]
     func_ref.restype = DWORD
     if ssid:
@@ -764,10 +876,10 @@ def WlanScan(hClientHandle, pInterfaceGuid, ssid=""):
             raise Exception("SSIDs have a maximum length of 32 characters.")
         # data = tuple(ord(char) for char in ssid)
         data = ssid
-        dot11_ssid = byref(DOT11_SSID(length, data))
+        dot11_ssid = byref(Dot11Ssid(length, data))
     else:
         dot11_ssid = None
-    # TODO: Support WLAN_RAW_DATA argument.
+    # TODO: Support WlanRawData argument.
     result = func_ref(hClientHandle,
                       byref(pInterfaceGuid),
                       dot11_ssid,
@@ -1011,7 +1123,7 @@ class WLAN_CONNECTION_PARAMETERS(Structure):
     """
     _fields_ = [("wlanConnectionMode", WLAN_CONNECTION_MODE),
                 ("strProfile", LPCWSTR),
-                ("pDot11_ssid", POINTER(DOT11_SSID)),
+                ("pDot11_ssid", POINTER(Dot11Ssid)),
                 ("pDesiredBssidList", POINTER(DOT11_BSSID_LIST)),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dwFlags", DWORD)]
@@ -1097,7 +1209,7 @@ WLAN_OPCODE_VALUE_TYPE_DICT = {
 
 
 class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
-    _fields_ = [("dot11Ssid", DOT11_SSID),
+    _fields_ = [("dot11Ssid", Dot11Ssid),
                 ("dot11BssType", DOT11_BSS_TYPE),
                 ("dot11Bssid", DOT11_MAC_ADDRESS),
                 ("dot11PhyType", DOT11_PHY_TYPE),
@@ -1137,7 +1249,7 @@ class WLAN_CONNECTION_ATTRIBUTES(Structure):
 WLAN_INTF_OPCODE_TYPE_DICT = {
     "wlan_intf_opcode_autoconf_enabled": c_bool,
     "wlan_intf_opcode_background_scan_enabled": c_bool,
-    "wlan_intf_opcode_radio_state": WLAN_RADIO_STATE,
+    "wlan_intf_opcode_radio_state": WlanRadioState,
     "wlan_intf_opcode_bss_type": DOT11_BSS_TYPE,
     "wlan_intf_opcode_interface_state": WLAN_INTERFACE_STATE,
     "wlan_intf_opcode_current_connection": WLAN_CONNECTION_ATTRIBUTES,
