@@ -420,7 +420,11 @@ def get_wireless_networks_bss_list(wireless_interface):
     return networks
 
 def scan(wireless_interface):
-    """ Scan on wifi"""
+    """ Scan on wifi
+        The WlanScan function can then be called to initiate a scan.
+        The application should then wait to receive the wlan_notification_acm_scan_complete notification or timeout
+        after 4 seconds.
+    """
     handle = WlanOpenHandle()
     WlanScan(handle, wireless_interface.guid)
     WlanCloseHandle(handle)
