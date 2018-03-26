@@ -22,11 +22,11 @@
 #
 
 import functools
-import warnings
 
 import xmltodict
 
 import win32_native_wifi_api as native_api
+from win32_native_wifi_api import *
 
 NULL = None
 
@@ -217,14 +217,14 @@ class ACMConnectionNotificationData(object):
 
 class WlanEvent(object):
     ns_type_to_codes_dict = {
-        native_api.WLAN_NOTIFICATION_SOURCE_NONE: None,
-        native_api.WLAN_NOTIFICATION_SOURCE_ONEX: native_api.OneXNotificationTypeEnum,
-        native_api.WLAN_NOTIFICATION_SOURCE_ACM: native_api.WlanNotificationACMEnum,
-        native_api.WLAN_NOTIFICATION_SOURCE_MSM: native_api.WlanNotificationMSMEnum,
-        native_api.WLAN_NOTIFICATION_SOURCE_SECURITY: None,
-        native_api.WLAN_NOTIFICATION_SOURCE_IHV: None,
-        native_api.WLAN_NOTIFICATION_SOURCE_HNWK: native_api.WlanHostedNetworkNotificationCodeEnum,
-        native_api.WLAN_NOTIFICATION_SOURCE_ALL: native_api.OneXNotificationTypeEnum,
+        WLAN_NOTIFICATION_SOURCE_NONE: None,
+        WLAN_NOTIFICATION_SOURCE_ONEX: ONEX_NOTIFICATION_TYPE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_ACM: WLAN_NOTIFICATION_ACM_ENUM,
+        WLAN_NOTIFICATION_SOURCE_MSM: WLAN_NOTIFICATION_MSM_ENUM,
+        WLAN_NOTIFICATION_SOURCE_SECURITY: None,
+        WLAN_NOTIFICATION_SOURCE_IHV: None,
+        WLAN_NOTIFICATION_SOURCE_HNWK: WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_ALL: ONEX_NOTIFICATION_TYPE_ENUM,
     }
 
     def __init__(self, original, notificationSource, notificationCode, interfaceGuid, data):
@@ -419,13 +419,11 @@ def get_wireless_networks_bss_list(wireless_interface):
     native_api.WlanCloseHandle(handle)
     return networks
 
-
-def scan_get_wireless_networks_bss_list(wireless_interface):
-    """Scan and returns a list of WirelessNetworkBss objects based on the wireless networks availables."""
-    handle = native_api.WlanOpenHandle()
-    native_api.WlanScan(handle, wireless_interface.guid)
-    native_api.WlanCloseHandle(handle)
-    return get_wireless_networks_bss_list(wireless_interface)
+def scan(wireless_interface):
+    """ Scan on wifi"""
+    handle = WlanOpenHandle()
+    WlanScan(handle, wireless_interface.guid)
+    WlanCloseHandle(handle)
 
 
 def get_wireless_available_network_list(wireless_interface):
@@ -634,15 +632,15 @@ def wnd_to_str(wlan_notification_data):
     ])
 
 
-def on_wlan_notification(callback, wlan_notification_data):
+def on_wlan_notification(callback, wlan_notification_data, p):
     event = WlanEvent.from_wlan_notification_data(wlan_notification_data)
     if event is not None:
         callback(event)
 
 
-def register_notification(callback):
+def register_notification(callback, ntfsource):
     handle = native_api.WlanOpenHandle()
-    c_back = native_api.WlanRegisterNotification(handle, functools.partial(OnWlanNotification, callback))
+    c_back = native_api.WlanRegisterNotification(handle, functools.partial(on_wlan_notification, callback), ntfsource)
     global_callbacks.append(c_back)
     global_handles.append(handle)
     return NotificationObject(handle, c_back)
