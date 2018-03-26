@@ -218,13 +218,13 @@ class ACMConnectionNotificationData(object):
 class WlanEvent(object):
     ns_type_to_codes_dict = {
         WLAN_NOTIFICATION_SOURCE_NONE: None,
-        WLAN_NOTIFICATION_SOURCE_ONEX: ONEX_NOTIFICATION_TYPE_ENUM,
-        WLAN_NOTIFICATION_SOURCE_ACM: WLAN_NOTIFICATION_ACM_ENUM,
-        WLAN_NOTIFICATION_SOURCE_MSM: WLAN_NOTIFICATION_MSM_ENUM,
+        WLAN_NOTIFICATION_SOURCE_ONEX: OneXNotificationTypeEnum,
+        WLAN_NOTIFICATION_SOURCE_ACM: WlanNotificationACMEnum,
+        WLAN_NOTIFICATION_SOURCE_MSM: WlanNotificationMSMEnum,
         WLAN_NOTIFICATION_SOURCE_SECURITY: None,
         WLAN_NOTIFICATION_SOURCE_IHV: None,
-        WLAN_NOTIFICATION_SOURCE_HNWK: WLAN_HOSTED_NETWORK_NOTIFICATION_CODE_ENUM,
-        WLAN_NOTIFICATION_SOURCE_ALL: ONEX_NOTIFICATION_TYPE_ENUM,
+        WLAN_NOTIFICATION_SOURCE_HNWK: WlanHostedNetworkNotificationCodeEnum,
+        WLAN_NOTIFICATION_SOURCE_ALL: OneXNotificationTypeEnum,
     }
 
     def __init__(self, original, notificationSource, notificationCode, interfaceGuid, data):
