@@ -44,5 +44,5 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
-    install_requires=['comtypes', 'xmltodict'],
+    install_requires=['comtypes', 'xmltodict', 'enum'],
 )
